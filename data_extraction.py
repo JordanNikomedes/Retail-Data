@@ -23,9 +23,4 @@ class DataExtractor:
 
 
 
-#if __name__ == '__main__':
 
-    #jordan = DataExtractor()
-    #query = 'SELECT * FROM table'
-
-    #print(jordan.read_data(query))

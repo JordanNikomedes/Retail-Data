@@ -21,7 +21,6 @@ class DatabaseConnector:
 
         Raises:
             raises an error into the console when the content is not valid or has difficulty loading it.
-        
         """
 
         with open(name, 'r') as file:
@@ -41,7 +40,6 @@ class DatabaseConnector:
 
         Return:
             Returns an established connection to the database to then manipulate said data. 
-        
         """
 
         engine = create_engine(
@@ -60,8 +58,6 @@ class DatabaseConnector:
         
         Return:
             Returns the tables from the database and lists them into the console.
-        
-        
         """
 
         inspector = inspect(engine)
@@ -73,8 +69,3 @@ class DatabaseConnector:
 
 
 
-#if __name__ == '__main__':
-
-    #data = DatabaseConnector('db_creds.yaml')
-
-    #print(data.read_db_creds())
