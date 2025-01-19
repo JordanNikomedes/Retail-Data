@@ -1,5 +1,6 @@
 import yaml
 import psycopg2
+import pandas as pd
 from sqlalchemy import create_engine
 from sqlalchemy import inspect
 
@@ -68,4 +69,15 @@ class DatabaseConnector:
 
 
 
-
+if __name__ == '__main__':
+    db = DatabaseConnector()
+    cred = db.read_db_creds("db_creds.yaml") 
+    engine = db.init_db_engine(cred)
+    engine.connect()
+    print("Hi") 
+    print(engine)
+    tables_list = db.list_db_table(engine)
+    print(tables_list)
+    with engine.begin() as conn:
+        table = pd.read_sql_table(tables_list[2], con=conn)
+    print(table)
