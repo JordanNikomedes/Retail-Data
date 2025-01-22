@@ -64,6 +64,18 @@ class DatabaseConnector:
         inspector = inspect(engine)
         return inspector.get_table_names()
 
+    def upload_to_db(self,df,name,engine):
+        '''This method converts the dataframe back to its original state, uploading it back to the database
+        
+        Args:
+            df(dataframe): takes the pandas dataframe as a parameter.
+            name(dataframe): name of the targeted table.
+            engine(obj): connecting to the database.
+
+        Return:
+            Returns the dataframe back to its original state.
+        '''
+        df.to_sql(name, engine, if_exists='replace')
 
 
 
@@ -74,7 +86,7 @@ if __name__ == '__main__':
     cred = db.read_db_creds("db_creds.yaml") 
     engine = db.init_db_engine(cred)
     engine.connect()
-    print("Hi") 
+    print("Hello") 
     print(engine)
     tables_list = db.list_db_table(engine)
     print(tables_list)

@@ -10,7 +10,7 @@ class DataCleaning:
         '''This method cleans the user data to make sure there are no anomilies within the table.
         
         Args:
-            df(table): Takes the pandas dataframe as the parameter.
+            df(dataframe): Takes the pandas dataframe as the parameter.
 
         Return:
             Returns the legacy users cleaned with no anomilies.
