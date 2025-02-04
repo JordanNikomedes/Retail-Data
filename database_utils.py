@@ -69,7 +69,7 @@ class DatabaseConnector:
         
         Args:
             df(dataframe): takes the pandas dataframe as a parameter.
-            name(dataframe): name of the targeted table.
+            name(database): name of the targeted table.
             engine(obj): connecting to the database.
 
         Return:
