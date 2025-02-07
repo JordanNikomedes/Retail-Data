@@ -1,4 +1,5 @@
 import pandas as pd
+from tabula import read_pdf
 
 class DataExtractor:
 
@@ -19,6 +20,9 @@ class DataExtractor:
 
         with engine.begin() as conn:
             return pd.read_sql_table(table_name, con=conn)
+        
+    def retrieve_pdf_data(self, link):
+
 
         
 
