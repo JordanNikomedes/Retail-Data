@@ -73,3 +73,14 @@ class DataCleaning:
 
         #print(table)
         return table
+
+    def clean_card_data(self, table):
+        self.valid_date(table, 'date_payment_confirmed')
+        self.remove_null(table)
+
+        try:
+            assert table['card_number'].str.isdigit()
+        except:
+            AssertionError
+
+        return table
