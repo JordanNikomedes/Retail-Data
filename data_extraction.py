@@ -1,5 +1,5 @@
 import pandas as pd
-from tabula import read_pdf
+import tabula
 
 class DataExtractor:
 
@@ -22,7 +22,7 @@ class DataExtractor:
             return pd.read_sql_table(table_name, con=conn)
         
     def retrieve_pdf_data(self, link):
-
+        return pd.concat(tabula.read_pdf(link, pages='all'))
 
         
 
