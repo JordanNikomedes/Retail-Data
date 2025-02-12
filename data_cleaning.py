@@ -49,12 +49,6 @@ class DataCleaning:
         table.dropna(subset= [phone_column], inplace= True)
         return table[phone_column]
     
-    
-    
-    
-    
-    
-    
     def clean_user_data(self, table):
         '''This method cleans the user data to make sure there are no anomilies within the table.
         
@@ -75,6 +69,7 @@ class DataCleaning:
         return table
 
     def clean_card_data(self, table):
+        '''This method removes any nomalies inside the data in the PDF file'''
         self.valid_date(table, 'date_payment_confirmed')
         self.remove_null(table)
 
@@ -82,5 +77,13 @@ class DataCleaning:
             assert table['card_number'].str.isdigit()
         except:
             AssertionError
+
+        return table
+    
+    def called_clean_store_data(self, table):
+        '''This method cleans the data from the data from the API'''
+        table.drop(columns='lat',inplace=True)
+        table = self.valid_date(table,'opening_date')
+        table = self.remove_null(table)
 
         return table

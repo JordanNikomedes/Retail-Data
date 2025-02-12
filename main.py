@@ -43,9 +43,26 @@ def dim_card_details():
     engine.connect()
     du.upload_to_db(table, 'dim_card_details', engine)
 
+def dim_store_details():
+    du = DatabaseConnector()
+    de = DataExtractor()
+    dc = DataCleaning()  
+    # retrieving the data
+    table = de.retrieve_stores_data()
+    print(table[table['store_code']=='WEB-1388012W'])
+    table.to_csv('dim_store_details.csv')
+    # cleaning the data
+    table = dc.called_clean_store_data(table)
+    # uploading data to local host
+    cred = du.read_db_creds("db_creds_local.yaml") 
+    engine = du.init_db_engine(cred)
+    engine.connect()
+    du.upload_to_db(table, 'dim_store_details', engine)
+
 
 if __name__ == '__main__':
 
     #dim_users()
-    dim_card_details()
+    #dim_card_details()
+    dim_store_details()
 
