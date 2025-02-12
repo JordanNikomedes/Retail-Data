@@ -26,7 +26,26 @@ def dim_users():
     engine2.connect()
     du.upload_to_db(df, 'dim_users', engine2)
 
+def dim_card_details():
+    du = DatabaseConnector()
+    de = DataExtractor()
+    dc = DataCleaning()
+
+    # convert pdf to dataframe
+    table = de.retrieve_pdf_data('https://data-handling-public.s3.eu-west-1.amazonaws.com/card_details.pdf')
+    print(table.head())
+    # cleaning the card details
+    table = dc.clean_card_data(table)
+
+    # uploading data to local host
+    cred = du.read_db_creds('db_creds_local.yaml')
+    engine = du.init_db_engine(cred)
+    engine.connect()
+    du.upload_to_db(table, 'dim_card_details', engine)
+
 
 if __name__ == '__main__':
 
-    dim_users()
+    #dim_users()
+    dim_card_details()
+
