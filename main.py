@@ -8,18 +8,15 @@ def dim_users():
     du = DatabaseConnector()
     de = DataExtractor()
     dc = DataCleaning()
-
     #connecting the engine and listing dataframe
     cred = du.read_db_creds('db_creds.yaml')
     engine = du.init_db_engine(cred)
     engine.connect()
     tables_list = du.list_db_table(engine)
-
     #cleaning dataframe
     df_name = tables_list[2]
     df = dc.clean_user_data(de.read_rds_table( engine, df_name))
     print(df.head())
-
     #uploading to local database
     cred2 = du.read_db_creds('db_creds_local.yaml')
     engine2 = du.init_db_engine(cred2)
@@ -75,11 +72,32 @@ def dim_products():
     engine.connect()
     du.upload_to_db(table, 'dim_products', engine)
 
+def orders_table():
+    du = DatabaseConnector()
+    de = DataExtractor()
+    dc = DataCleaning()
+    # connecting to engine and listing table
+    cred = du.read_db_creds('db_creds.yaml')
+    engine = du.init_db_engine(cred)
+    engine.connect()
+    tables_list = du.list_db_table(engine)
+    df_name = tables_list[3]
+    #cleaning the data in product orers table
+    table = dc.clean_orders_data(de.read_rds_table( engine, df_name))
+    # uploading data to local host
+    cred2 = du.read_db_creds('db_creds_local.yaml')
+    engine2 = du.init_db_engine(cred2)
+    engine2.connect()
+    du.upload_to_db(table, 'orders_table', engine2)
+
+
+
 
 if __name__ == '__main__':
 
     #dim_users()
     #dim_card_details()
     #dim_store_details()
-    dim_products()
+    #dim_products()
+    orders_table()
 

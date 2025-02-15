@@ -91,5 +91,5 @@ if __name__ == '__main__':
     tables_list = db.list_db_table(engine)
     print(tables_list)
     with engine.begin() as conn:
-        table = pd.read_sql_table(tables_list[2], con=conn)
+        table = pd.read_sql_table(tables_list[3], con=conn)
     print(table)

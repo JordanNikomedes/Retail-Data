@@ -144,3 +144,13 @@ class DataCleaning:
         table = self.valid_date(table,'date_added')
         table.dropna(how='any',inplace= True)       
         return table
+    
+    def clean_orders_data(self, table):
+        '''This method cleans the orders table by dropping the relevant columns and getting rid of
+        any null values'''
+        table.drop(columns='1',inplace=True)
+        table.drop(columns='first_name',inplace=True)
+        table.drop(columns='last_name',inplace=True)
+        table.drop(columns='level_0',inplace=True)
+        table.dropna(how='any',inplace= True)
+        return table
