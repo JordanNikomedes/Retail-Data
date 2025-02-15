@@ -1,6 +1,7 @@
+import numpy as np
 import pandas as pd
 import re
-import numpy as np
+
 
 class DataCleaning:
     
@@ -69,7 +70,14 @@ class DataCleaning:
             return False
     
     def get_grams(self,value):
-        '''This method holds an if statement to check and replace the units inot grams and kilograms'''
+        '''The purpose for this method is to convert all units into either grams or kilograms.
+        
+        Args:
+            value(string): Takes each line from dataframe in product_weights column.
+            
+        Return:
+            Returns each slice of data into a consistent unit of weight.
+        '''
         value = str(value)
         value = value.replace(' .','')
         if value.endswith('kg'):
