@@ -90,6 +90,21 @@ def orders_table():
     engine2.connect()
     du.upload_to_db(table, 'orders_table', engine2)
 
+def dim_date_times():
+    du = DatabaseConnector()
+    de = DataExtractor()
+    dc = DataCleaning()
+    # getting json file from s3 bucket
+    table = de.extract_s3_with_link()
+    table.to_csv('dim_date_times.csv')
+    # cleaning the data
+    table = dc.clean_date_time(table)
+    # uploading data to local host
+    cred = du.read_db_creds('db_creds_local.yaml')
+    engine = du.init_db_engine(cred)
+    engine.connect()
+    du.upload_to_db(table, 'dim_date_times', engine)
+
 
 
 
@@ -99,5 +114,6 @@ if __name__ == '__main__':
     #dim_card_details()
     #dim_store_details()
     #dim_products()
-    orders_table()
+    #orders_table()
+    dim_date_times()
 

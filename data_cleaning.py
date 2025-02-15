@@ -154,3 +154,14 @@ class DataCleaning:
         table.drop(columns='level_0',inplace=True)
         table.dropna(how='any',inplace= True)
         return table
+    
+    def clean_date_time(self, table):
+        '''This method gets rid of any null values, converts time stamp to correct format and
+        makes sure all formats in dates are numeric'''
+        table['month'] = pd.to_numeric( table['month'],errors='coerce', downcast="integer")
+        table['year'] = pd.to_numeric( table['year'], errors='coerce', downcast="integer")
+        table['day'] = pd.to_numeric( table['day'], errors='coerce', downcast="integer")
+        table['timestamp'] = pd.to_datetime(table['timestamp'], format='%H:%M:%S', errors='coerce')
+        table.dropna(how='any',inplace= True)
+        table.reset_index(inplace=True)       
+        return table
