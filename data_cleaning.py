@@ -49,6 +49,52 @@ class DataCleaning:
         table.dropna(subset= [phone_column], inplace= True)
         return table[phone_column]
     
+    def check_math_operation(self,value):
+        if 'x' in value:
+            value.replace(' ','')
+            lis_factors = value.split('x')
+            return str(float(lis_factors[0])*float(lis_factors[1]))
+        return value
+    
+    def isDigits(self,num):
+        '''This method checks if output is integer'''
+        return str(num) if str(num).isdigit() else np.nan
+    
+    def isfloat(self,num):
+        '''This method checks if integer is a float'''
+        try:
+            float(num)
+            return True
+        except ValueError:
+            return False
+    
+    def get_grams(self,value):
+        '''This method holds an if statement to check and replace the units inot grams and kilograms'''
+        value = str(value)
+        value = value.replace(' .','')
+        if value.endswith('kg'):
+            value = value.replace('kg','')
+            value = self.check_math_operation(value)
+            return 1000*float(value) if self.isfloat(value) else np.nan
+        elif value.endswith('g'):   
+            value = value.replace('g','')
+            value = self.check_math_operation(value)
+            return float(value) if self.isfloat(value) else np.nan
+        elif value.endswith('ml'):   
+            value = value.replace('ml','')
+            value = self.check_math_operation(value)
+            return float(value) if self.isfloat(value) else np.nan
+        elif value.endswith('l'):   
+            value = value.replace('l','')
+            value = self.check_math_operation(value)
+            return 1000*float(value) if self.isfloat(value) else np.nan
+        elif value.endswith('oz'):   
+            value = value.replace('oz','')
+            value = self.check_math_operation(value)
+            return 28.3495*float(value) if self.isfloat(value) else np.nan
+        else:
+            np.nan
+    
     def clean_user_data(self, table):
         '''This method cleans the user data to make sure there are no anomilies within the table.
         
@@ -86,4 +132,15 @@ class DataCleaning:
         table = self.valid_date(table,'opening_date')
         table = self.remove_null(table)
 
+        return table
+    
+    def convert_product_weights(self, table, column_name):
+        '''This method converts the weights inside the data to a consistent unit of measurement'''
+        table[column_name] = table[column_name].apply(self.get_grams)
+        return table
+    
+    def clean_products_data(self, table):
+        '''This method cleans the table of any anomalies and null values'''
+        table = self.valid_date(table,'date_added')
+        table.dropna(how='any',inplace= True)       
         return table

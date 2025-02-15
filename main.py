@@ -59,10 +59,27 @@ def dim_store_details():
     engine.connect()
     du.upload_to_db(table, 'dim_store_details', engine)
 
+def dim_products():
+    du = DatabaseConnector()
+    de = DataExtractor()
+    dc = DataCleaning()  
+    # get data from s3
+    table =  de.extract_from_s3()
+    table =  dc.convert_product_weights(table,'weight')
+#    df.to_csv('dim_products.csv')
+    # clean data 
+    table =  dc.clean_products_data(table)
+    # upload to db 
+    cred = du.read_db_creds("db_creds_local.yaml") 
+    engine = du.init_db_engine(cred)
+    engine.connect()
+    du.upload_to_db(table, 'dim_products', engine)
+
 
 if __name__ == '__main__':
 
     #dim_users()
     #dim_card_details()
-    dim_store_details()
+    #dim_store_details()
+    dim_products()
 

@@ -2,6 +2,10 @@ import pandas as pd
 import tabula
 import json
 import requests
+import boto3
+import botocore
+from botocore import UNSIGNED
+from botocore.config import Config
 
 class DataExtractor:
 
@@ -39,8 +43,10 @@ class DataExtractor:
         return response.json()['number_stores']
 
     def retrieve_stores_data(self):
+        '''This method retrieves the data from the bucket and puts it into a json format. Then converts
+        into pandas dataframe'''
         list_of_frames = []
-        store_number   = self.list_number_of_stores()
+        store_number = self.list_number_of_stores()
         for _ in range(store_number):
             api_url_base = f'https://aqj7u5id95.execute-api.eu-west-1.amazonaws.com/prod/store_details/{_}'
             response = requests.get(
@@ -49,6 +55,19 @@ class DataExtractor:
                                     )
             list_of_frames.append( pd.json_normalize(response.json()))
         return pd.concat(list_of_frames)
+    
+    def extract_from_s3(self):
+        '''This method reaches the data from aws s3 bucket giving status codes if it was successful'''
+        s3 = boto3.client("s3", config=Config(signature_version=UNSIGNED))
+        response = s3.get_object(Bucket='data-handling-public', Key='products.csv')
+        status   = response.get("ResponseMetadata", {}).get("HTTPStatusCode")
+        if status == 200:
+            print(f"Successful S3 get_object response. Status - {status}")
+            return pd.read_csv(response.get("Body"))
+        else:
+            print(f"Unsuccessful S3 get_object response. Status - {status}")
+        
+
         
 
     
