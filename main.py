@@ -46,7 +46,7 @@ def dim_store_details():
     dc = DataCleaning()  
     # retrieving the data
     table = de.retrieve_stores_data()
-    print(table[table['store_code']=='WEB-1388012W'])
+    #print(table[table['store_code']=='WEB-1388012W'])
     table.to_csv('dim_store_details.csv')
     # cleaning the data
     table = dc.called_clean_store_data(table)
@@ -114,6 +114,6 @@ if __name__ == '__main__':
     #dim_card_details()
     #dim_store_details()
     #dim_products()
-    #orders_table()
-    dim_date_times()
+    orders_table()
+    #dim_date_times()
 

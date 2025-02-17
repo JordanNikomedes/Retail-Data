@@ -125,7 +125,7 @@ class DataCleaning:
     def clean_card_data(self, table):
         '''This method removes any nomalies inside the data in the PDF file'''
         self.valid_date(table, 'date_payment_confirmed')
-        self.remove_null(table)
+        table.dropna(how='any',inplace= True)
 
         try:
             assert table['card_number'].str.isdigit()
@@ -136,9 +136,8 @@ class DataCleaning:
     
     def called_clean_store_data(self, table):
         '''This method cleans the data from the data from the API'''
-        table.drop(columns='lat',inplace=True)
-        table = self.valid_date(table,'opening_date')
-        table = self.remove_null(table)
+        self.valid_date(table,'opening_date')
+        table.dropna(how='any',inplace= True)
 
         return table
     
@@ -149,7 +148,7 @@ class DataCleaning:
     
     def clean_products_data(self, table):
         '''This method cleans the table of any anomalies and null values'''
-        table = self.valid_date(table,'date_added')
+        self.valid_date(table,'date_added')
         table.dropna(how='any',inplace= True)       
         return table
     
@@ -161,7 +160,13 @@ class DataCleaning:
         table.drop(columns='last_name',inplace=True)
         table.drop(columns='level_0',inplace=True)
         table.dropna(how='any',inplace= True)
+        try:
+            assert table['card_number'].str.isdigit()
+        except:
+            AssertionError
+
         return table
+        
     
     def clean_date_time(self, table):
         '''This method gets rid of any null values, converts time stamp to correct format and
