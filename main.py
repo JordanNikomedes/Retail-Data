@@ -48,9 +48,12 @@ def dim_store_details():
     table = de.retrieve_stores_data()
     #print(table[table['store_code']=='WEB-1388012W'])
     table.to_csv('dim_store_details.csv')
+    print(table.head())
     # cleaning the data
     table = dc.called_clean_store_data(table)
+    #print(table.head())
     # uploading data to local host
+    #print(table.head())
     cred = du.read_db_creds("db_creds_local.yaml") 
     engine = du.init_db_engine(cred)
     engine.connect()
@@ -112,8 +115,8 @@ if __name__ == '__main__':
 
     #dim_users()
     #dim_card_details()
-    #dim_store_details()
+    dim_store_details()
     #dim_products()
-    orders_table()
+    #orders_table()
     #dim_date_times()
 

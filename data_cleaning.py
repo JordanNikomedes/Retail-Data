@@ -13,7 +13,7 @@ class DataCleaning:
         # Removes all null values within the table
 
         self.d_table = pd.DataFrame(d_table)
-        self.d_table.replace(['null', 'None', 'NA'], pd.NA)
+        self.d_table.replace(['NULL'], pd.NA)
         self.d_table.dropna(inplace=True)
         return self.d_table
     
@@ -136,8 +136,17 @@ class DataCleaning:
     
     def called_clean_store_data(self, table):
         '''This method cleans the data from the data from the API'''
-        self.valid_date(table,'opening_date')
-        table.dropna(how='any',inplace= True)
+        table = table.reset_index(drop=True)
+      
+        # Convert column into correct data type
+        table['opening_date'] = pd.to_datetime(table['opening_date'], errors = 'coerce')
+        table['staff_numbers'] = table['staff_numbers'].str.replace(r"(\D)", "", regex = True) # Removes all non-digit
+        table['staff_numbers'] = pd.to_numeric(table['staff_numbers'], errors = 'coerce', downcast='integer') 
+        # Removes null values. Started with 451
+        table = table.replace("NULL", np.NaN)
+        table = table.dropna(subset=['staff_numbers'], axis=0)
+        table = table[table['country_code'].apply(lambda x: len(str(x)) <= 2)]
+        table.drop(columns='lat',inplace=True)
 
         return table
     
