@@ -31,4 +31,4 @@ In the steps following the cleaning, I took certain procedures in making sure al
 
 ### Examples Of The Cleaning
 
-![Converting Measurement](RETAIL-DATA/clean_code.png)
+![Converting Measurement](clean_code.png)
