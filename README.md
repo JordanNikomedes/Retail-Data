@@ -31,4 +31,4 @@ In the steps following the cleaning, I took certain procedures in making sure al
 
 ### Examples Of The Cleaning
 
-![Converting Measurement](C:\Users\jorda\Documents\aicore retail project\Retail-Data\images\clean_code.png)
+![Converting Measurement](images\clean_code.png)
